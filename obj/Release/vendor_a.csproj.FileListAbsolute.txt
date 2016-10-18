@@ -99,3 +99,5 @@ z:\Desktop\vendor_a\obj\Release\helloworld.TrustInfo.xml
 z:\Desktop\vendor_a\obj\Release\helloworld.exe.manifest
 z:\Desktop\vendor_a\obj\Release\helloworld.application
 z:\Desktop\vendor_a\obj\Release\helloworld.selectMenu.resources
+C:\Users\Tsukasa\Documents\GitHub\vendor\obj\Release\helloworld.exe
+C:\Users\Tsukasa\Documents\GitHub\vendor\obj\Release\helloworld.pdb

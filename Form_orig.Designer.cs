@@ -28,18 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // Form_orig
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 730);
-            this.Name = "Form_orig";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "無題ページ";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_orig_FormClosing);
-            this.ResumeLayout(false);
+			this.SuspendLayout();
+			// 
+			// Form_orig
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(1344, 912);
+			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Name = "Form_orig";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "無題ページ";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_orig_FormClosing);
+			this.Load += new System.EventHandler(this.Form_orig_Load);
+			this.ResumeLayout(false);
 
         }
 

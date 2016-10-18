@@ -95,5 +95,10 @@ namespace helloworld
                 mm = new menuManager("menu.csv");
             }
         }
-    }
+
+		private void Form_orig_Load(object sender, EventArgs e)
+		{
+
+		}
+	}
 }
