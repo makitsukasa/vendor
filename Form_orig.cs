@@ -15,6 +15,8 @@ namespace helloworld
         static menuManager mm;
         static int already_menu_created = 0;
 
+		protected static List<menu> cart = new List<menu>();
+
         // 利用されそうな変数群。定義されても使われなかったらエラー出るんだっけ？
         //static string str_start_station;
         //static string str_end_station;

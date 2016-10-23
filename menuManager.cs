@@ -6,7 +6,7 @@ using System.IO;
 
 namespace helloworld
 {
-	struct menu
+	public struct menu
 	{
 		public int id;
 		public string name;

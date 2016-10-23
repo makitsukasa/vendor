@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,11 +12,50 @@ namespace helloworld
 
 	public partial class selectMenu : helloworld.Form_orig
 	{
+		private menuButton[] cartItems = new menuButton[5];
+		private categoryButton[] cButtons = new categoryButton[12];
+		private menuButton[,] mButtons = new menuButton[6, 3];
+		private category category = category.EmptySpace;
 
 		public selectMenu()
 		{
 			InitializeComponent();
-			//textBox1.Text = money.ToString();
+		}
+		private void setCategory(category c)
+		{
+			category = c;
+			int[] IDs = categoryTable.getIDs(c);
+			int index = 0;
+			for(int y = 0; y < 6; y++)
+			{
+				for(int x = 0; x < 3; x++)
+				{
+					if(mButtons[y, x] != null)
+					{
+						if(mButtons[y, x].nameLabel != null)
+							this.Controls.Remove(mButtons[y, x].nameLabel);
+						if(mButtons[y, x].priceLabel != null)
+							this.Controls.Remove(mButtons[y, x].priceLabel);
+					}
+					if(index >= IDs.Length)
+					{
+						mButtons[y, x] = new menuButton(0, category.EmptySpace); 
+					}
+					else {
+						mButtons[y, x] = new menuButton(IDs[index], c);
+						this.Controls.Add(mButtons[y, x].nameLabel);
+						this.Controls.Add(mButtons[y, x].priceLabel);
+						mButtons[y, x].setLocation(x * 200, y * 100);
+						index++;
+					}
+				}
+			}
+			for(int y = 0; y < 5; y++)
+			{
+				cartItems[y] = new menuButton(0, category.EmptySpace);
+				this.Controls.Add(cartItems[y].nameLabel);
+				this.Controls.Add(cartItems[y].priceLabel);
+			}
 		}
 		/*
         private void button2_Click(object sender, EventArgs e)
@@ -27,6 +67,32 @@ namespace helloworld
             this.Dispose();
         }
         */
+
+		private void menu1(object sender, EventArgs e)
+		{
+
+		}
+
+		public void addCart(menu m)
+		{
+			cart.Add(m);
+			showCart();
+		}
+
+		private void showCart()
+		{
+			int start;
+			if(cart.Count < 5) start = 0;
+			else start = cart.Count - 5;
+
+			for(int i = 0; i < 5; i++)
+			{
+				if(cart.Count <= i) break;
+				cartItems[i].setMenuText(cart[start + i].id, category.EmptySpace);
+				cartItems[i].setLocation(700, i * 100);
+			}
+			
+		}
 
 		private void buyTicket(object sender, EventArgs e)
 		{
@@ -52,119 +118,73 @@ namespace helloworld
 
 		}
 
-		private void label1_Click(object sender, EventArgs e)
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Random r = new Random();
+			ArrayList l = new ArrayList(Enum.GetValues(typeof(category)));
+			int i = r.Next(l.Count);
+			setCategory((category)i);
+		}
+
+		private void button2_Click(object sender, EventArgs e)
 		{
 
+			formEnd newform = new formEnd();
+			newform.Show();
+			this.Dispose();
 		}
 	}
 
 
-	public enum category { Udon, Soba, Ramen, EmptySpace, Don, Curry, Big, Small, Rice, Soup, Salad, Dessert };
-
-	public static class categoryTable
-	{
-		public static int[] getIDs(category c)
-		{
-			switch(c)
-			{
-			case category.Udon: return new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-			case category.Soba: return new int[] { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 75 };
-			case category.Ramen: return new int[] { 21, 22, 23, 24, 25 };
-			case category.Curry: return new int[] { 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37 };
-			case category.Don: return new int[] { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55 };
-			case category.Big: return new int[] { 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 75 };
-			case category.Small: return new int[] { 76, 77, 78, 79, 80, 81, 81, 82, 83, 84, 85, 86, 87, 89 };
-			case category.Rice: return new int[] { 97, 98, 99, 100 };
-			case category.Soup: return new int[] { 73, 74, 95, 96 };
-			case category.Salad: return new int[] { 88, 90 };
-			case category.Dessert: return new int[] { 91, 92, 93, 94 };
-			default: return new int[] { };
-			}
-		}
-		public static string getName(category c)
-		{
-			switch(c)
-			{
-			case category.Udon: return "うどん";
-			case category.Soba: return "そば";
-			case category.Ramen: return "ラーメン";
-			case category.Curry: return "カレー";
-			case category.Don: return "丼";
-			case category.Big: return "大皿";
-			case category.Small: return "小皿";
-			case category.Rice: return "ごはん";
-			case category.Soup: return "汁物";
-			case category.Salad: return "サラダ";
-			case category.Dessert: return "デザート";
-			default: return "Error";
-			}
-		}
-		public static Point getLocation(category c)
-		{
-			switch(c)
-			{
-			case category.Udon: return new Point(0, 0);
-			case category.Soba: return new Point(10, 0);
-			case category.Ramen: return new Point(0, 10);
-			case category.Curry: return new Point(10, 10);
-			case category.Don: return new Point(0, 20);
-			case category.Big: return new Point(10, 20);
-			case category.Small: return new Point(0, 0);
-			case category.Rice: return new Point(0, 0);
-			case category.Soup: return new Point(0, 0);
-			case category.Salad: return new Point(0, 0);
-			case category.Dessert: return new Point(0, 0);
-			default: return new Point(0, 0);
-			}
-		}
-		public static Color getColor(category c)
-		{
-			switch(c)
-			{
-			case category.Udon:
-			case category.Soba:
-			case category.Ramen:
-				return Color.Yellow;
-			case category.Curry:
-			case category.Don:
-				return Color.Red;
-			case category.Big:
-			case category.Small:
-			case category.Rice:
-			case category.Soup:
-			case category.Salad:
-			case category.Dessert:
-				return Color.Orange;
-			default:
-				return Color.Crimson;
-			}
-		}
-
-	}
-
-	public class categoryButton : Button
-	{
-		private int[] IDs;
-		public categoryButton(category c)
-		{
-			Text = categoryTable.getName(c);
-			IDs = categoryTable.getIDs(c);
-			Location = categoryTable.getLocation(c);
-		}
-	}
 
 	public class menuButton
 	{
-		private Label nameLabel;
-		private Label priceLabel;
+		public Label nameLabel = new Label();
+		public Label priceLabel = new Label();
+		private static menuManager mm = new menuManager();
 		private menu m;
+
 		public menuButton(int ID, category c)
 		{
-			menuManager mm = new menuManager();
+			setMenuText(ID, c);
+		}
+
+		public void setMenuText(int ID, category c)
+		{
 			m = mm.getMenu(ID);
+			nameLabel.Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			nameLabel.Location = new Point(133, 113);
+			nameLabel.Name = "nameLabel" + ID;
+			nameLabel.Size = new Size(200, 34);
+			nameLabel.TabIndex = 0;
+			nameLabel.Text = categoryTable.getIDs(c)[0].ToString();
+			nameLabel.Click += new EventHandler(click);
 			nameLabel.Text = m.name;
 			nameLabel.BackColor = categoryTable.getColor(c);
-			priceLabel.Text = m.price + "円";
+
+			priceLabel.Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			priceLabel.Location = new Point(133, 133);
+			priceLabel.Name = "nameLabel" + ID;
+			priceLabel.Size = new Size(200, 34);
+			priceLabel.TabIndex = 0;
+			priceLabel.Text = categoryTable.getIDs(c)[0].ToString();
+			priceLabel.Click += new EventHandler(click);
+			priceLabel.Text = m.price.ToString();
+			priceLabel.BackColor = Color.White;
+		}
+
+		public void setLocation(Point p)
+		{
+			nameLabel.Location = p;
+			priceLabel.Location = p + new Size(0, 30);
+		}
+		public void setLocation(int x, int y)
+		{
+			setLocation(new Point(x, y));
+		}
+		private void click(object sender, EventArgs e)
+		{
+			(nameLabel.Parent as selectMenu).addCart(m);
 		}
 	}
 
