@@ -26,7 +26,7 @@ namespace helloworld
 			case category.Soup: return new int[] { 73, 74, 95, 96 };
 			case category.Salad: return new int[] { 88, 90 };
 			case category.Dessert: return new int[] { 91, 92, 93, 94 };
-			default: return new int[] { 100 };
+			default: return new int[] {};
 			}
 		}
 		public static string getName(category c)
@@ -44,7 +44,7 @@ namespace helloworld
 			case category.Soup: return "汁物";
 			case category.Salad: return "サラダ";
 			case category.Dessert: return "デザート";
-			default: return "Error";
+			default: return "";
 			}
 		}
 		public static Point getLocation(category c)
@@ -65,40 +65,84 @@ namespace helloworld
 			default: return new Point(0, 0);
 			}
 		}
-		public static Color getColor(category c)
-		{
-			switch(c)
-			{
-			case category.Udon:
-			case category.Soba:
-			case category.Ramen:
-				return Color.Yellow;
-			case category.Curry:
-			case category.Don:
-				return Color.Red;
-			case category.Big:
-			case category.Small:
-			case category.Rice:
-			case category.Soup:
-			case category.Salad:
-			case category.Dessert:
-				return Color.Orange;
-			default:
-				return Color.White;
-			}
-		}
+        public static Color getColor(category c)
+        {
+            switch (c)
+            {
+                case category.Udon:
+                case category.Soba:
+                case category.Ramen:
+                    return Color.Yellow;
+                case category.Curry:
+                case category.Don:
+                    return Color.Red;
+                case category.Big:
+                case category.Small:
+                case category.Rice:
+                case category.Soup:
+                case category.Salad:
+                case category.Dessert:
+                    return Color.Orange;
+                default:
+                    return Color.White;
+            }
+        }
+        public static Color getMenuButtonColor(category c)
+        {
+            switch (c)
+            {
+                case category.Udon:
+                case category.Soba:
+                case category.Ramen:
+                    return Color.FromArgb(0xff, 0xff, 0x33);
+                case category.Curry:
+                case category.Don:
+                    return Color.FromArgb(0xff, 0x33, 0x33);
+                case category.Big:
+                case category.Small:
+                case category.Rice:
+                case category.Soup:
+                case category.Salad:
+                case category.Dessert:
+                    return Color.FromArgb(0xff, 0x99, 0x33);
+                default:
+                    return Color.White;
+            }
+        }
 
 	}
 
-	public class categoryButton : Button
+	public class categoryButton : Label
 	{
 		private int[] IDs;
+        private category c;
 		public categoryButton(category c)
 		{
-			Text = categoryTable.getName(c);
+            this.c = c;
+            Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+            BackColor = categoryTable.getColor(c);
+            Text = categoryTable.getName(c);
 			IDs = categoryTable.getIDs(c);
 			Location = categoryTable.getLocation(c);
+            Click += new EventHandler(click);
 		}
+        public void setLocation(Point p)
+        {
+            this.Location = p;
+        }
+
+        public void setLocation(int x, int y)
+        {
+            setLocation(new Point(x, y));
+        }
+
+        private void click(object sender, EventArgs e)
+        {
+            (this.Parent as selectMenu).setCategory(c);
+        }
+
+
+
 	}
 
 }

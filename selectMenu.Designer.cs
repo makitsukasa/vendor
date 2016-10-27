@@ -28,47 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(126, 731);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(398, 109);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(862, 744);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(259, 129);
-			this.button2.TabIndex = 1;
-			this.button2.Text = "button2";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
-			// 
-			// selectMenu
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
-			this.ClientSize = new System.Drawing.Size(1344, 912);
-			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button1);
-			this.Margin = new System.Windows.Forms.Padding(5);
-			this.Name = "selectMenu";
-			this.Text = "購入したい食券を選択してください";
-			this.Load += new System.EventHandler(this.selectMenu_Load);
-			this.ResumeLayout(false);
+            this.comfirm = new System.Windows.Forms.Button();
+            this.availableMoneyLabel = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // comfirm
+            // 
+            this.comfirm.Location = new System.Drawing.Point(742, 591);
+            this.comfirm.Margin = new System.Windows.Forms.Padding(2);
+            this.comfirm.Name = "comfirm";
+            this.comfirm.Size = new System.Drawing.Size(194, 103);
+            this.comfirm.TabIndex = 1;
+            this.comfirm.Text = "button2";
+            this.comfirm.UseVisualStyleBackColor = true;
+            this.comfirm.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // availableMoneyLabel
+            // 
+            this.availableMoneyLabel.Font = new System.Drawing.Font("MS UI Gothic", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.availableMoneyLabel.Location = new System.Drawing.Point(806, 525);
+            this.availableMoneyLabel.Name = "availableMoneyLabel";
+            this.availableMoneyLabel.Size = new System.Drawing.Size(100, 30);
+            this.availableMoneyLabel.TabIndex = 2;
+            this.availableMoneyLabel.Text = "label1";
+            // 
+            // selectMenu
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.ClientSize = new System.Drawing.Size(1008, 730);
+            this.Controls.Add(this.availableMoneyLabel);
+            this.Controls.Add(this.comfirm);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Name = "selectMenu";
+            this.Text = "購入したい食券を選択してください"; 
+            this.Load += new System.EventHandler(this.selectMenu_Load);
+            this.ResumeLayout(false);
 
         }
 
 		#endregion
 
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button comfirm;
+        private System.Windows.Forms.Label availableMoneyLabel;
 	}
 }

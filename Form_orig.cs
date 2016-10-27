@@ -26,6 +26,7 @@ namespace helloworld
         //static DateTime before;
         protected static string item_name;	// 購入した食券の商品名
         protected static int money = 0;	// 券売機への投入金額
+        protected static int availableMoney = 0;
 
         // 商品のサイズ
         protected const int SS = 0;
@@ -62,7 +63,7 @@ namespace helloworld
         {
             // その商品が現在の投入金額で変えるかどうか
             bool retValue = false;
-            if (this.get_price(name) <= money)
+            if (this.get_price(name) <= availableMoney)
                 retValue = true;
             return retValue;
         }
@@ -70,7 +71,7 @@ namespace helloworld
         protected void buy_ticket(string name)
         {
             // お金を消費して商品名の食券を購入
-            money -= this.get_price(name);
+            availableMoney -= this.get_price(name);
         }
 
         private void Form_orig_FormClosing(object sender, FormClosingEventArgs e)
@@ -102,5 +103,12 @@ namespace helloworld
 		{
 
 		}
+
+		public List<menu> getCart()
+		{
+			return cart;
+		}
+
+
 	}
 }
