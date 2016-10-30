@@ -1,0 +1,7 @@
+Application, Window Text, Action Object, Object Text, Time(1 = 100 nanosec)
+helloworld.Form1, Text: 実験開始, System.Windows.Forms.Button, Text: 実験を開始する, 21208201
+helloworld.insertMoney, Text: お金を入れる, System.Windows.Forms.Button, Text: 1000, 28245961
+helloworld.insertMoney, Text: お金を入れる, System.Windows.Forms.Button, Text: 1000, 29563475
+helloworld.insertMoney, Text: お金を入れる, System.Windows.Forms.Button, Text: 1000, 30969691
+helloworld.insertMoney, Text: お金を入れる, System.Windows.Forms.Button, Text: 1000, 32699703
+helloworld.insertMoney, Text: お金を入れる, System.Windows.Forms.Button, Text: 食券を選ぶ, 35257012

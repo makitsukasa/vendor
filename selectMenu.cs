@@ -21,10 +21,10 @@ namespace helloworld
 		{
             InitializeComponent();
             availableMoney = money;
-            for (int y = 0; y < 5; y++)
+            for (int y = 0; y < 4; y++)
             {
                 cartButtons[y] = new cartButton(this);
-                cartButtons[y].setLocation(800, y * 100);
+                cartButtons[y].setLocation(155, y * 22.5);
             }
             int index = 0;
             category[] categs = new category[12];
@@ -41,15 +41,30 @@ namespace helloworld
                     if (categs[index] != category.EmptySpace)
                     {
                         cButtons[y, x] = new categoryButton(categs[index]);
-                        cButtons[y, x].setLocation(x * 100, y * 100);
+                        cButtons[y, x].setLocation(categoryTable.getLocation(categs[index]));
                         this.Controls.Add(cButtons[y, x]);
                     }
                     index++;
                 }
-            }
-            availableMoneyLabel.Text = availableMoney.ToString() + "円";
-            reloadAvailable();
+			}
 
+
+			totalAmountLabel.Location = new Point(Pixel(155), Pixel(95));
+			totalAmountLabel.Size = new Size(Pixel(40), Pixel(10));
+			totalAmountLabel.Text = String.Format("計{0,9}円", money - availableMoney);
+
+			moneyLabel.Location = new Point(Pixel(155), Pixel(105));
+			moneyLabel.Size = new Size(Pixel(35), Pixel(8));
+			moneyLabel.Text = String.Format("投入{0,6}円", money);
+
+			comfirmButton.Location = new Point(Pixel(157.5), Pixel(113));
+			comfirmButton.Size = new Size(Pixel(30), Pixel(12));
+
+			cancelButton.Location = new Point(Pixel(160), Pixel(126));
+			cancelButton.Size = new Size(Pixel(20), Pixel(8));
+
+			reloadAvailable();
+			showCart();
 		}
 		public void setCategory(category c)
 		{
@@ -73,7 +88,7 @@ namespace helloworld
 					}
 					else {
 						mButtons[y, x] = new menuButton(this, IDs[index], c);
-						mButtons[y, x].setLocation(x * 150 + 300, y * 100);
+						mButtons[y, x].setLocation(x * 33 + 54, y * 22.5 + 1.25);
 						index++;
 					}
 				}
@@ -84,22 +99,25 @@ namespace helloworld
 		public void showCart()
 		{
 			int first, last = cart.Count - 1;
-			if(cart.Count < 5)
+			if(cart.Count < 4)
 			{
 				first = 0;
 			}
 			else
 			{
-				first = cart.Count - 5;
+				first = cart.Count - 4;
 			}
 
 			for(int i = first; i <= last; i++)
 			{
 				cartButtons[i - first].setMenuText(cart[i].id, category.EmptySpace);
+				cartButtons[i - first].index = i;
+				cartButtons[i - first].setAvailable(true);
 			}
-			for(int i = last + 1; i < first + 5; i++)
+			for(int i = last + 1; i < first + 4; i++)
 			{
 				cartButtons[i - first].setMenuText(int.MaxValue, category.EmptySpace);
+				cartButtons[i - first].setAvailable(false);
 			}
 
 		}
@@ -108,7 +126,7 @@ namespace helloworld
 		{
 			cart.Add(m);
 			availableMoney -= m.price;
-			availableMoneyLabel.Text = availableMoney.ToString() + "円";
+			totalAmountLabel.Text = String.Format("計{0,9}円", money - availableMoney);
 			showCart();
 			reloadAvailable();
 		}
@@ -167,26 +185,27 @@ namespace helloworld
 			this.Dispose();
 		}
 
-		private void selectMenu_Load(object sender, EventArgs e)
+		private void comfirmButton_Click(object sender, EventArgs e)
 		{
-
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			Random rand = new Random();
-			ArrayList l = new ArrayList(Enum.GetValues(typeof(category)));
-			setCategory((category)rand.Next(l.Count));
-		}
-
-		private void button2_Click(object sender, EventArgs e)
-		{
-            if (cart.Count == 0) return;
+			if(cart.Count == 0) return;
 			formEnd newform = new formEnd();
 			newform.Show();
 			this.Dispose();
 		}
 
+		private void cancelButton_Click(object sender, EventArgs e)
+		{
+			cart.Clear();
+			insertMoney newform = new insertMoney();
+			newform.Show();
+			this.Dispose();
+		}
+
+		private void selectMenu_Load(object sender, EventArgs e)
+		{
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+			this.ClientSize = new System.Drawing.Size(1008, 730);
+		}
 	}
 
 
@@ -213,16 +232,16 @@ namespace helloworld
 		public void setMenuText(int ID, category c)
 		{
 			m = mm.getMenu(ID);
-			nameLabel.Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			nameLabel.Font = new Font("MS UI Gothic", 23F, FontStyle.Regular, GraphicsUnit.Point, 128);
 			nameLabel.Name = "nameLabel" + ID;
-			nameLabel.Size = new Size(200, 34);
+			nameLabel.Size = new Size(Form_orig.Pixel(30), Form_orig.Pixel(12.5));
 			nameLabel.TabIndex = 0;
 			nameLabel.Click += new EventHandler(click);
-			nameLabel.Text = m.name;
+			nameLabel.Text = Form_orig.formatToMenuButton(m.name);
 
-			priceLabel.Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			priceLabel.Font = new Font("MS UI Gothic", 27F, FontStyle.Regular, GraphicsUnit.Point, 128);
 			priceLabel.Name = "nameLabel" + ID;
-			priceLabel.Size = new Size(200, 34);
+			priceLabel.Size = new Size(Form_orig.Pixel(30), Form_orig.Pixel(7.5));
 			priceLabel.TabIndex = 0;
 			priceLabel.Click += new EventHandler(click);
             priceLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -234,11 +253,15 @@ namespace helloworld
 		public virtual void setLocation(Point p)
 		{
 			nameLabel.Location = p;
-			priceLabel.Location = p + new Size(0, 30);
+			priceLabel.Location = p + new Size(0, Form_orig.Pixel(12.5));
 		}
 		public virtual void setLocation(int x, int y)
 		{
-			setLocation(new Point(x, y));
+			setLocation((double)x, (double)y);
+		}
+		public virtual void setLocation(double x, double y)
+		{
+			setLocation(new Point(Form_orig.Pixel(x), Form_orig.Pixel(y)));
 		}
 		private void click(object sender, EventArgs e)
 		{
@@ -263,33 +286,45 @@ namespace helloworld
 		protected Form_orig parent;
 		public int index;
 		public cartButton() { }
-		public cartButton(Form_orig parent, List<menu> cart, int index)
+		/*public cartButton(Form_orig parent, List<menu> cart, int index)
 		{
 			this.parent = parent;
 			parent.Controls.Add(nameLabel);
 			parent.Controls.Add(priceLabel);
+			nameLabel.Size = new Size(Form_orig.Pixel(30), Form_orig.Pixel(12.5));
+			priceLabel.Size = new Size(Form_orig.Pixel(30), Form_orig.Pixel(7.5));
 			this.c = category.EmptySpace;
 			setMenuText(cart[index].id, c);
 
 			this.index = index;
-			cancelButton.Text = "取り消し";
+			cancelButton.Location = nameLabel.Location + new Size(0, Form_orig.Pixel(12.5));
+			cancelButton.Size = new Size(Form_orig.Pixel(13), Form_orig.Pixel(8));
+			cancelButton.Text = "取消";
 			cancelButton.Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			cancelButton.TextAlign = ContentAlignment.MiddleCenter;
 			cancelButton.BackColor = Color.FromArgb(0x0000ff);
 			parent.Controls.Add(cancelButton);
 			cancelButton.BringToFront();
 			cancelButton.Click += new EventHandler(cancelButtonClick);
-		}
+		}*/
         public cartButton(Form_orig parent, int ID = 0, category c = category.EmptySpace)
         {
 			this.parent = parent;
-            parent.Controls.Add(nameLabel);
+			nameLabel.Size = new Size(Form_orig.Pixel(30), Form_orig.Pixel(12.5));
+			priceLabel.Size = new Size(Form_orig.Pixel(30), Form_orig.Pixel(7.5));
+			parent.Controls.Add(nameLabel);
             parent.Controls.Add(priceLabel);
-            this.c = c;
+			this.c = c;
             setMenuText(ID, c);
+			priceLabel.BackColor = Color.FromArgb(0xffffff);
+			nameLabel.BackColor = Color.FromArgb(0xffffff);
 
-            cancelButton.Text = "取り消し";
+			cancelButton.Location = nameLabel.Location + new Size(0, Form_orig.Pixel(12.5));
+			cancelButton.Size = new Size(Form_orig.Pixel(13), Form_orig.Pixel(8));
+			cancelButton.Text = "取消";
             cancelButton.Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            cancelButton.BackColor = Color.FromArgb(0x0000ff);
+			cancelButton.TextAlign = ContentAlignment.MiddleCenter;
+            cancelButton.BackColor = Color.FromArgb(0xffffff);
             parent.Controls.Add(cancelButton);
             cancelButton.BringToFront();
             cancelButton.Click += new EventHandler(cancelButtonClick);
@@ -297,22 +332,38 @@ namespace helloworld
         public override void setLocation(Point p)
         {
             nameLabel.Location = p;
-            priceLabel.Location = p + new Size(0, 30);
-            cancelButton.Location = p + new Size(0, 50);
-        }
-        public override void setLocation(int x, int y)
-        {
-            setLocation(new Point(x, y));
-        }
-        public void cancelButtonClick(object sender, EventArgs e)
+			priceLabel.Location = p + new Size(Form_orig.Pixel(5), Form_orig.Pixel(12.5));
+			cancelButton.Location = p + new Size(0, Form_orig.Pixel(12.5));
+		}
+		public override void setLocation(int x, int y)
+		{
+			setLocation((double)x, (double)y);
+		}
+		public override void setLocation(double x, double y)
+		{
+			setLocation(new Point(Form_orig.Pixel(x), Form_orig.Pixel(y)));
+		}
+		public void cancelButtonClick(object sender, EventArgs e)
         {
 			if(parent is selectMenu)
 			{
+				if((parent as selectMenu).getCart().Count <= index) return;
 				(parent as selectMenu).removeCart(index);
 				(parent as selectMenu).showCart();
 				(parent as selectMenu).reloadAvailable();
 			}
         }
+		public new void setAvailable(bool flag)
+		{
+			if(flag)
+			{
+				cancelButton.Text = "取消";
+			}
+			else
+			{
+				cancelButton.Text = "";
+			}
+		}
 
     }
 

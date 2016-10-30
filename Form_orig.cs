@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace helloworld
 {
+
     public partial class Form_orig : Form
     {
         static log logger;
@@ -101,12 +102,43 @@ namespace helloworld
 
 		private void Form_orig_Load(object sender, EventArgs e)
 		{
-
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+			this.ClientSize = new System.Drawing.Size(1008, 730);
 		}
 
 		public List<menu> getCart()
 		{
 			return cart;
+		}
+
+		public static int Pixel(int millimeter)
+		{
+			// プリントに記載 横は約19.1cmで730Pixel
+			return Pixel((double)millimeter);
+		}
+		public static int Pixel(double millimeter)
+		{
+			// プリントに記載 横は約25.4cmで730Pixel，75%縮小
+			return (int)(millimeter * 730 / 191 / 0.75);
+		}
+
+		public static string formatToMenuButton(string str)
+		{
+			if(str.Contains("（"))
+			{
+				if(str.Split('（')[0].Length > 2)
+				{
+					return str.Split('（')[0] + "\r\n（" + str.Split('（')[1];
+				}
+			}
+			if(str.Length > 5)
+			{
+				return str.Insert(5, "\r\n");
+			}
+			else
+			{
+				return str;
+			}
 		}
 
 

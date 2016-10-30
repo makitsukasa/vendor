@@ -49,21 +49,23 @@ namespace helloworld
 		}
 		public static Point getLocation(category c)
 		{
+			double x, y;
 			switch(c)
 			{
-			case category.Udon: return new Point(0, 0);
-			case category.Soba: return new Point(10, 0);
-			case category.Ramen: return new Point(0, 10);
-			case category.Curry: return new Point(10, 10);
-			case category.Don: return new Point(0, 20);
-			case category.Big: return new Point(10, 20);
-			case category.Small: return new Point(0, 0);
-			case category.Rice: return new Point(0, 0);
-			case category.Soup: return new Point(0, 0);
-			case category.Salad: return new Point(0, 0);
-			case category.Dessert: return new Point(0, 0);
-			default: return new Point(0, 0);
+			case category.Udon: x = 0; y = 02.5; break;
+			case category.Soba: x = 25; y = 02.5; break;
+			case category.Ramen: x = 0; y = 22.5; break;
+			case category.Curry: x = 0; y = 47.5; break;
+			case category.Don: x = 25; y = 47.5; break;
+			case category.Big: x = 0; y = 72.5; break;
+			case category.Small: x = 25; y = 72.5; break;
+			case category.Rice: x = 0; y = 92.5; break;
+			case category.Soup: x = 25; y = 92.5; break;
+			case category.Salad: x = 0; y = 112.5; break;
+			case category.Dessert: x = 25; y = 112.5; break;
+			default: x = 0; y = 0; break;
 			}
+			return new Point(Form_orig.Pixel(x), Form_orig.Pixel(y));
 		}
         public static Color getColor(category c)
         {
@@ -119,24 +121,31 @@ namespace helloworld
 		public categoryButton(category c)
 		{
             this.c = c;
-            Font = new Font("MS UI Gothic", 20F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			Size = new Size(Form_orig.Pixel(25), Form_orig.Pixel(18));
+            Font = new Font("MS UI Gothic", 26F, FontStyle.Regular, GraphicsUnit.Point, 128);
+			TextAlign = ContentAlignment.MiddleCenter;
             BackColor = categoryTable.getColor(c);
             Text = categoryTable.getName(c);
 			IDs = categoryTable.getIDs(c);
 			Location = categoryTable.getLocation(c);
             Click += new EventHandler(click);
 		}
-        public void setLocation(Point p)
-        {
-            this.Location = p;
-        }
+		public void setLocation(Point p)
+		{
+			this.Location = p;
+		}
 
-        public void setLocation(int x, int y)
-        {
-            setLocation(new Point(x, y));
-        }
+		public void setLocation(int x, int y)
+		{
+			setLocation((double)x, (double)y);
+		}
 
-        private void click(object sender, EventArgs e)
+		public void setLocation(double x, double y)
+		{
+			setLocation(new Point(Form_orig.Pixel(x), Form_orig.Pixel(y)));
+		}
+
+		private void click(object sender, EventArgs e)
         {
             (this.Parent as selectMenu).setCategory(c);
         }
